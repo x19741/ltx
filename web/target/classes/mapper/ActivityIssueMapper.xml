@@ -1,0 +1,99 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="spring.mapper.activityManagementMapper.ActivityIssueMapper">
+    <resultMap id="BaseResultMap" type="spring.entity.activityManagement.ActivityManagement">
+        <id column="activity_id" property="activityId"/>
+        <result column="activity_name" property="activityName"/>
+        <result column="activity_number" property="activityNumber"/>
+        <result column="activity_maxNumber" property="activityMaxNumber"/>
+        <result column="activity_beginDate" property="activityBeginDate"/>
+        <result column="activity_endDate" property="activityEndDate"/>
+        <result column="activity_content" property="activityContent"/>
+        <result column="activity_address" property="activityAddress"/>
+        <result column="activity_genre" property="activityGenre"/>
+        <result column="activity_workName" property="activityWorkName"/>
+        <result column="activity_responsibility" property="activityResponsibility"/>
+        <result column="activity_workPhone" property="activityWorkPhone"/>
+
+        <result column="activity_workName1" property="activityWorkName1"/>
+        <result column="activity_responsibility1" property="activityResponsibility1"/>
+        <result column="activity_workPhone1" property="activityWorkPhone1"/>
+
+        <result column="activity_workName2" property="activityWorkName2"/>
+        <result column="activity_responsibility2" property="activityResponsibility2"/>
+        <result column="activity_workPhone2" property="activityWorkPhone2"/>
+
+        <result column="activity_workName3" property="activityWorkName3"/>
+        <result column="activity_responsibility3" property="activityResponsibility3"/>
+        <result column="activity_workPhone3" property="activityWorkPhone3"/>
+
+        <result column="activity_status" property="activityStatus"/>
+
+        <result column="activity_beginDate1" property="activityBeginDate1"/>
+        <result column="activity_endDate1" property="activityEndDate1"/>
+
+        <result column="activity_beginDate2" property="activityBeginDate2"/>
+        <result column="activity_endDate2" property="activityEndDate2"/>
+
+        <result column="activity_beginDate3" property="activityBeginDate3"/>
+        <result column="activity_endDate3" property="activityEndDate3"/>
+
+        <result column="activity_beginDate4" property="activityBeginDate4"/>
+        <result column="activity_endDate4" property="activityEndDate4"/>
+
+        <result column="activity_beginDate5" property="activityBeginDate5"/>
+        <result column="activity_endDate5" property="activityEndDate5"/>
+
+        <result column="activity_beginDate6" property="activityBeginDate6"/>
+        <result column="activity_endDate6" property="activityEndDate6"/>
+
+        <result column="activity_beginDate7" property="activityBeginDate7"/>
+        <result column="activity_endDate7" property="activityEndDate7"/>
+
+        <result column="activity_beginDate8" property="activityBeginDate8"/>
+        <result column="activity_endDate8" property="activityEndDate8"/>
+    </resultMap>
+
+    <sql id="Base_Column_List">
+        activity_id,activity_name,activity_number,activity_maxNumber,activity_beginDate,
+        activity_endDate,activity_content,activity_address,activity_genre,activity_workName,
+        activity_responsibility,activity_workPhone
+        ,activity_workName1,activity_responsibility1,activity_workPhone1
+        ,activity_workName2,activity_responsibility2,activity_workPhone2
+        ,activity_workName3,activity_responsibility3,activity_workPhone3
+        ,activity_status
+        ,activity_beginDate1,activity_endDate1
+        ,activity_beginDate2,activity_endDate2
+        ,activity_beginDate3,activity_endDate3
+        ,activity_beginDate4,activity_endDate4
+        ,activity_beginDate5,activity_endDate5
+        ,activity_beginDate6,activity_endDate6
+        ,activity_beginDate7,activity_endDate7
+        ,activity_beginDate8,activity_endDate8
+    </sql>
+
+    <delete id="deleteDsIds" parameterType="String">
+        delete from retirement_activityManagement where activity_id in
+        <foreach item="item" collection="array" open="(" separator="," close=")">
+            #{item}
+        </foreach>
+    </delete>
+
+    <select id="selectListByPage" parameterType="java.lang.String" resultMap="BaseResultMap">
+        select
+        <include refid="Base_Column_List"/>
+        from retirement_activityManagement
+        <where>
+            <if test="activityName!=null and activityName!=''">
+                activity_name LIKE concat( concat( '%',#{activityName} ),'%' )
+            </if>
+            <if test="activityBeginDate!=null">
+                and activity_beginDate >= #{activityBeginDate}
+            </if>
+            <if test="activityEndDate!=null">
+                and activity_endDate &lt;= #{activityEndDate}
+            </if>
+        </where>
+        ORDER by activity_id
+    </select>
+</mapper>

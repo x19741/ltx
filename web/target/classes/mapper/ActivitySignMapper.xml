@@ -1,0 +1,41 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="spring.mapper.activityManagementMapper.ActivitySignMapper">
+
+    <select id="selectSign" resultType="spring.dto.ActivitySignDTO">
+          SELECT
+	        a.activity_id as activityId,
+	        a.activity_name as activityName,
+	        a.activity_genre as activityGenre,
+	        a.activity_beginDate as activityBeginDate,
+            a.activity_endDate as activityEndDate,
+	        a.activity_address as activityAddress,
+	        count(b.people_id) as applyCount,
+	        sum(b.people_status>1) as signCount
+          FROM
+	        retirement_activityManagementAndPeople q
+	        INNER JOIN retirement_activityManagement a ON a.activity_id = q.activity_id
+	        INNER JOIN retirement_activityManagement_people b ON b.people_id = q.people_id
+		    <where>
+				a.activity_id in
+				<foreach item="item" collection="array" open="(" separator="," close=")">
+				    #{item.activityId}
+				</foreach>
+<!--				<if test="activityName!=null and activityName!=''">-->
+<!--					<foreach item="item" collection="array" open="(" separator="," close=")">-->
+<!--						and activity_name LIKE concat( concat( '%',#{activityName} ),'%' )-->
+<!--					</foreach>-->
+<!--				</if>-->
+<!--				<if test="activityBeginDate!=null and activityBeginDate!=''">-->
+<!--					<foreach item="item" collection="array" open="(" separator="," close=")">-->
+<!--						and activity_beginDate >= #{item.activityBeginDate}-->
+<!--					</foreach>-->
+<!--				</if>-->
+<!--				<if test="activityEndDate!=null and activityEndDate!=''">-->
+<!--					<foreach item="item" collection="array" open="(" separator="," close=")">-->
+<!--						and activity_endDate &lt;= #{item.activityEndDate}-->
+<!--					</foreach>-->
+<!--				</if>-->
+			</where>
+    </select>
+</mapper>

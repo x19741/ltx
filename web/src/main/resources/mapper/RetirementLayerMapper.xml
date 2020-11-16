@@ -1,0 +1,54 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="spring.mapper.RetirementLayerMapper">
+    <resultMap id="BaseResultMap" type="spring.entity.RetirementLayer">
+        <id column="layer_id" property="id"/>
+        <result column="layer_designation" property="layerDesignation"/>
+        <result column="layer_number" property="layerNumber"/>
+        <result column="layer_flow" property="layerFlow"/>
+        <result column="layer_duty" property="layerDuty"/>
+        <result column="layer_dutya" property="layerDutya"/>
+        <result column="layer_dutyb" property="layerDutyb"/>
+        <result column="layer_dutyc" property="layerDutyc"/>
+        <result column="layer_monicker" property="layerMonicker"/>
+        <result column="layer_monickera" property="layerMonickera"/>
+        <result column="layer_monickerb" property="layerMonickerb"/>
+        <result column="layer_monickerc" property="layerMonickerc"/>
+        <result column="layer_relation" property="layerRelation"/>
+        <result column="layer_relationa" property="layerRelationa"/>
+        <result column="layer_relationb" property="layerRelationb"/>
+        <result column="layer_relationc" property="layerRelationc"/>
+        <result column="layer_name" property="layerName"/>
+        <result column="layer_namea" property="layerNamea"/>
+        <result column="layer_nameb" property="layerNameb"/>
+        <result column="layer_namec" property="layerNamec"/>
+        <result column="layer_contact" property="layerContact"/>
+        <result column="layer_contacta" property="layerContacta"/>
+        <result column="layer_contactb" property="layerContactb"/>
+        <result column="layer_contactc" property="layerContactc"/>
+    </resultMap>
+    <sql id="Base_Column_List">
+        `layer_id`,`layer_designation`,`layer_number`,`layer_flow`,`layer_duty`,`layer_dutya`,`layer_dutyb`,`layer_dutyc`,`layer_monicker`,`layer_monickera`,`layer_monickerb`,`layer_monickerc`,`layer_relation`,`layer_relationa`,`layer_relationb`,`layer_relationc`,`layer_name`,`layer_namea`,`layer_nameb`,`layer_namec`,`layer_contact`,`layer_contacta`,`layer_contactb`,`layer_contactc`
+    </sql>
+    <select id="selectListByPage" parameterType="java.lang.String" resultMap="BaseResultMap">
+        select
+        <include refid="Base_Column_List"/>
+        from retirement_layer
+        <where>
+            <if test="layerDesignation!=null and layerDesignation!=''">
+                layer_designation LIKE concat( concat ('%',#{layerDesignation},'%'))
+            </if>
+            <if test="layerNumber!=null">
+                layer_number = #{layerNumber}
+            </if>
+        </where>
+        ORDER by layer_id
+    </select>
+
+    <delete id="deleteLayer" parameterType="Long">
+        DELETE FROM `retirement_layer` WHERE `layer_id` IN
+        <foreach collection="array" item="item" open="(" separator="," close=")">
+            #{item}
+        </foreach>
+    </delete>
+</mapper>

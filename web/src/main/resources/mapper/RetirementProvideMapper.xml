@@ -1,0 +1,88 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="spring.mapper.RetirementProvideMapper">
+    <resultMap id="BaseResultMap" type="spring.entity.RetirementProvide" >
+        <id column="provide_id" property="id"  />
+        <result column="provide_card" property="provideCard" />
+        <result column="provide_pattern" property="providePattern" />
+        <result column="provide_designation" property="provideDesignation" />
+        <result column="provide_name" property="provideName" />
+        <result column="provide_sex" property="provideSex" />
+        <result column="provide_address" property="provideAddress" />
+        <result column="provide_relation" property="provideRelation" />
+    </resultMap>
+
+    <sql id="Base_Column_List">
+        `provide_id`,`provide_card`,`provide_pattern`,`provide_designation`,`provide_name`,`provide_sex`,`provide_address`,`provide_relation`
+    </sql>
+
+    <select id="selectListByPage" parameterType="java.lang.String" resultMap="BaseResultMap">
+        SELECT
+        <include refid="Base_Column_List"/>
+        FROM retirement_provide
+        <where>
+            <if test="provideName!=null and provideName!=''">
+              AND  provide_name LIKE concat( concat ('%',#{provideName},'%') )
+            </if>
+            <if test="provideCard!=null and provideCard!=''">
+                provide_card LIKE concat( concat ('%',#{provideCard},'%') )
+            </if>
+            <if  test="provideSex!=null and provideSex!=''">
+                AND provide_sex = #{provideSex}
+            </if>
+            <if  test="providePattern!=null and providePattern!=''">
+                AND provide_pattern = #{providePattern}
+            </if>
+        </where>
+        ORDER BY provide_id
+    </select>
+
+    <select id="selectOld" resultMap="BaseResultMap">
+        SELECT
+        <include refid="Base_Column_List"/>
+        FROM retirement_provide
+        <where>
+            <if test="provideCard!=null and provideCard!=''">
+                provide_card= #{provideCard}
+            </if>
+        </where>
+    </select>
+
+<!--    <select id="getUnderways" parameterType="java.lang.String" resultMap="BaseResultMap">
+        select  A.staff_name,A.staff_sex,A.staff_card,A.family_address,A.family_phone,B.provide_pattern,B.provide_designation from retirement_personnel A JOIN retirement_provide B ON A.staff_id=B.provide_ids
+        <where>
+
+        </where>
+        order by staff_id
+  </select>-->
+
+<!--    <select id="selectForm" parameterType="java.lang.String" resultMap="BaseResultMap">
+        SELECT A.staff_name,A.staff_sex,A.staff_card,A.family_address,A.family_phone,B.provide_pattern,B.provide_designation
+        FROM retirement_personnel A JOIN retirement_provide B ON A.staff_id=B.provide_ids
+        <where>
+            <if test="staffSex!=null and staffSex!=''">
+                AND staff_sex = #{staffSex}
+            </if>
+        </where>
+    </select>-->
+<!--
+
+    <select id="selectCard" parameterType="java.lang.String" resultMap="BaseResultMap">
+        SELECT A.staff_name,A.staff_sex,A.staff_card,A.family_address,A.family_phone,B.provide_pattern,B.provide_designation
+        FROM retirement_personnel A JOIN retirement_provide B ON A.staff_id=B.provide_ids
+        <where>
+            <if test="staffCard!=null adn staffCard!=!=''">
+                A.staff_card=#{staffCard}
+            </if>
+        </where>
+    </select>-->
+
+    <delete id="deletePrIdss" parameterType="String">
+        delete from retirement_provide where provide_id in
+        <foreach item="item" collection="array" open="(" separator="," close=")">
+            #{item}
+        </foreach>
+    </delete>
+
+
+</mapper>

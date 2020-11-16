@@ -1,0 +1,103 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="spring.mapper.RetirementWorkMapper">
+    <resultMap id="BaseResultMap" type="spring.entity.RetirementWork" >
+        <id column="work_id" property="id" />
+        <result column="work_name" property="workName"  />
+        <result column="work_sex" property="workSex" />
+        <result column="work_card" property="workCard" />
+        <result column="work_state" property="workState"  />
+        <result column="work_date" property="workDate" />
+        <result column="work_nation" property="workNation" />
+        <result column="work_politics" property="workPolitics" />
+        <result column="work_enter" property="workEnter" />
+        <result column="work_education" property="workEducation" />
+        <result column="work_degree" property="workDegree" />
+        <result column="work_admitted" property="workAdmitted" />
+        <result column="work_become" property="workBecome" />
+        <result column="work_branch" property="workBranch" />
+        <result column="work_dutuies" property="workDutuies" />
+        <result column="work_province" property="workProvince" />
+        <result column="work_city" property="workCity" />
+        <result column="work_district" property="workDistrict" />
+        <result column="work_retire" property="workRetire" />
+        <result column="work_phone" property="workPhone" />
+        <result column="work_number" property="workNumber" />
+        <result column="work_ageduty" property="workAgeduty" />
+        <result column="work_rank" property="workRank" />
+        <result column="work_professional" property="workProfessional" />
+        <result column="work_treatment" property="workTreatment" />
+        <result column="work_category" property="workCategory" />
+        <result column="work_unit" property="workUnit" />
+        <result column="work_condition" property="workCondition" />
+        <result column="work_marriage" property="workMarriage" />
+        <result column="work_provide" property="workProvide" />
+        <result column="work_address" property="workAddress" />
+        <result column="work_namee" property="workNamee" />
+        <result column="work_self" property="workSelf" />
+        <result column="work_relatio" property="workRelatio" />
+        <result column="work_permanent" property="workPermanent" />
+        <result column="work_names" property="workNames" />
+        <result column="work_selfs" property="workSelfs" />
+        <result column="work_relatios" property="workRelatios" />
+        <result column="work_permanents" property="workPermanents" />
+        <result column="work_file" property="workFile" />
+        <result column="work_time" property="workTime" />
+        <result column="work_times" property="workTimes" />
+        <result column="work_monad" property="workMonad" />
+        <result column="work_timea" property="workTimea" />
+        <result column="work_timesa" property="workTimesa" />
+        <result column="work_monada" property="workMonada" />
+        <result column="work_timeb" property="workTimeb" />
+        <result column="work_timesb" property="workTimesb" />
+        <result column="work_monadb" property="workMonadb" />
+        <result column="work_concern" property="workConcern" />
+        <result column="work_concerna" property="workConcerna" />
+        <result column="work_concernb" property="workConcernb" />
+        <result column="work_position" property="workPosition"/>
+    </resultMap>
+
+    <sql id="Base_Column_List" >
+        `work_id`,`work_name`,`work_sex`,`work_card`,`work_state`,`work_date`,`work_nation`,`work_politics`,`work_enter`,`work_education`,`work_degree`,`work_admitted`,`work_become`,`work_branch`,`work_dutuies`,`work_province`,`work_city`,`work_district`,`work_retire`,`work_phone`,`work_number`,`work_ageduty`,`work_rank`,`work_professional`,`work_treatment`,`work_category`,`work_unit`,`work_condition`,`work_marriage`,`work_provide`,`work_address`,`work_self`,`work_namee`,`work_relatio`,`work_permanent`,`work_names`,`work_selfs`,`work_relatios`,`work_permanents`,work_file,work_time,work_times,work_monad,work_concern,work_concerna,work_concernb,work_timea,work_timesa,work_monada,work_timeb,work_timesb,work_monadb,work_position
+    </sql>
+
+    <select id="selectListByPage" parameterType="java.lang.String" resultMap="BaseResultMap">
+        select
+        <include refid="Base_Column_List"/>
+        FROM retirement_work
+        <where>
+            <if test="workDate!=null and workDate!=''">
+                work_date <![CDATA[ <= ]]> #{familyDate} #{workDate}
+            </if>
+            <if test="workSex!=null and workSex!=''">
+                AND work_sex = #{workSex}
+            </if>
+            <if test="workName!=null and workName!=''">
+                and work_name LIKE concat( concat ('%',#{workName},'%'))
+            </if>
+            <if test="workCard!=null and workCard!=''">
+                and work_card LIKE concat( concat ('%',#{workCard},'%'))
+            </if>
+        </where>
+        ORDER by work_id
+    </select>
+
+    <select id="selectWorks"  resultMap="BaseResultMap">
+        SELECT
+        <include refid="Base_Column_List"/>
+        FROM `retirement_work`
+        <where>
+            <if test="workCard!=null and workCard!=''">
+                `work_card`= #{workCard}
+            </if>
+        </where>
+    </select>
+
+    <delete id="deleteWoIds" parameterType="String">
+        delete from retirement_work where work_id in
+        <foreach item="item" collection="array" open="(" separator="," close=")">
+            #{item}
+        </foreach>
+    </delete>
+
+</mapper>

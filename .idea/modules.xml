@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project version="4">
+  <component name="ProjectModuleManager">
+    <modules>
+      <module fileurl="file://$PROJECT_DIR$/config/config.iml" filepath="$PROJECT_DIR$/config/config.iml" />
+      <module fileurl="file://$PROJECT_DIR$/ltx.iml" filepath="$PROJECT_DIR$/ltx.iml" />
+      <module fileurl="file://$PROJECT_DIR$/ltx-sys/ltx-sys.iml" filepath="$PROJECT_DIR$/ltx-sys/ltx-sys.iml" />
+      <module fileurl="file://$PROJECT_DIR$/web/web.iml" filepath="$PROJECT_DIR$/web/web.iml" />
+    </modules>
+  </component>
+</project>

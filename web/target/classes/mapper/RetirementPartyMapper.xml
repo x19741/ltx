@@ -1,0 +1,95 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="spring.mapper.RetirementPartyMapper">
+    <resultMap id="BaseResultMap" type="spring.entity.RetirementParty" >
+        <id column="party_id" property="id" jdbcType="INTEGER" />
+        <result column="party_name" property="partyName" jdbcType="VARCHAR" />
+        <result column="party_sex" property="partySex" jdbcType="INTEGER" />
+        <result column="party_parvenu" property="partyParvenu" jdbcType="VARCHAR" />
+        <result column="party_nation" property="partyNation" jdbcType="VARCHAR" />
+        <result column="party_native" property="partyNative" />
+        <result column="party_marriage" property="partyMarriage" />
+        <result column="party_admitted" property="partyAdmitted" />
+        <result column="party_become" property="partyBecome" />
+        <result column="party_job" property="partyJob" />
+        <result column="party_place" property="partyPlace" />
+        <result column="party_member" property="partyMember" />
+        <result column="party_intro" property="partyIntro" />
+        <result column="party_places" property="partyPlaces" />
+        <result column="party_entrance" property="partyEntrance" />
+        <result column="party_present" property="partyPresent" />
+        <result column="party_education" property="partyEducation" />
+        <result column="party_degree" property="partyDegree" />
+        <result column="party_duty" property="partyDuty" />
+        <result column="party_address" property="partyAddress" />
+        <result column="party_current" property="partyCurrent" />
+        <result column="party_number" property="partyNumber" />
+        <result column="party_phone" property="partyPhone" />
+        <result column="flow_date" property="flowDate" />
+        <result column="flow_out" property="flowOut" />
+        <result column="flow_activity" property="flowActivity" />
+        <result column="flow_linkman" property="flowLinkman" />
+        <result column="flow_into" property="flowInto" />
+        <result column="flow_direction" property="flowDirection" />
+        <result column="flow_cause" property="flowCause" />
+        <result column="flow_condition" property="flowCondition" />
+        <result column="flow_way" property="flowWay" />
+        <result column="flow_format" property="flowFormat" />
+        <result column="flow_abroad" property="flowAbroad" />
+        <result column="flow_pillar" property="flowPillar" />
+        <result column="flow_home" property="flowHome" />
+        <result column="flow_analysis" property="flowAnalysis" />
+        <result column="flow_manage" property="flowManage" />
+        <result column="flow_live" property="flowLive" />
+        <result column="flow_province" property="flowProvince" />
+        <result column="flow_city" property="flowCity" />
+        <result column="flow_district" property="flowDistrict" />
+        <result column="flow_provinces" property="flowProvinces" />
+        <result column="flow_citys" property="flowCitys" />
+        <result column="flow_districts" property="flowDistricts" />
+        <result column="flow_picture" property="flowPicture"/>
+        <result column="flow_card" property="flowCard"/>
+    </resultMap>
+
+    <sql id="Base_Column_List" >
+    `party_id`,`party_name`,`party_sex`,`party_parvenu`,`party_nation`,`party_native`,`party_marriage`,`party_admitted`,`party_become`,`party_job`,`party_place`,`party_member`,`party_intro`,`party_places`,`party_entrance`,`party_present`,`party_education`,`party_degree`,`party_duty`,`party_address`,`party_current`,`party_number`,`party_phone`,`flow_date`,`flow_out`,`flow_activity`,`flow_linkman`,`flow_into`,`flow_direction`,`flow_cause`,`flow_condition`,`flow_way`,`flow_format`,`flow_abroad`,`flow_pillar`,`flow_home`,`flow_analysis`,`flow_manage`,`flow_live`,`flow_province`,`flow_city`,`flow_district`,flow_picture,flow_card
+    </sql>
+
+    <select id="selectListByPage" parameterType="java.lang.String" resultMap="BaseResultMap">
+        select
+        <include refid="Base_Column_List"/>
+        FROM retirement_party
+        <where>
+            <if test="partyName!=null and partyName!=''">
+                party_name LIKE concat( concat( '%',#{partyName} ),'%' )
+            </if>
+            <if test="partyPlaces!=null and partyPlaces!=''">
+               AND  party_places LIKE concat( concat( '%',#{partyPlaces} ),'%' )
+            </if>
+            <if test="partyJob!=null">
+                AND party_job <![CDATA[ <= ]]> #{partyJob}
+            </if>
+        </where>
+        ORDER by party_id
+    </select>
+    
+    <select id="selectParty" resultMap="BaseResultMap">
+        SELECT
+        <include refid="Base_Column_List"/>
+        FROM `retirement_party`
+        <where>
+            <if test="flowCard!=null and flowCard!=''" >
+                flow_card = #{flowCard}
+            </if>
+        </where>
+    </select>
+
+    <delete id="deletePaIds" parameterType="String">
+        delete from retirement_party where party_id in
+        <foreach item="item" collection="array" open="(" separator="," close=")">
+            #{item}
+        </foreach>
+    </delete>
+
+
+</mapper>

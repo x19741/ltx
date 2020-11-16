@@ -1,0 +1,17 @@
+{
+  "hints": [],
+  "groups": [
+    {
+      "sourceType": "spring.config.file.FileProperties",
+      "name": "file",
+      "type": "spring.config.file.FileProperties"
+    }
+  ],
+  "properties": [
+    {
+      "sourceType": "spring.config.file.FileProperties",
+      "name": "file.upload-dir",
+      "type": "java.lang.String"
+    }
+  ]
+}

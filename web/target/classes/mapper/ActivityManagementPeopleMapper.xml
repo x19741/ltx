@@ -1,0 +1,67 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="spring.mapper.activityManagementMapper.ActivityManagementPeopleMapper">
+    <resultMap id="BaseResultMap" type="spring.entity.activityManagement.ActivityManagementPeople">
+        <id column="people_id" property="peopleId"/>
+        <result column="people_name" property="peopleName"/>
+        <result column="people_sex" property="peopleSex"/>
+        <result column="people_cardNumber" property="peopleCardNumber"/>
+        <result column="people_job" property="peopleJob"/>
+        <result column="people_class" property="peopleClass"/>
+        <result column="people_jobName" property="peopleJobName"/>
+        <result column="people_work" property="peopleWork"/>
+        <result column="people_phone" property="peoplePhone"/>
+        <result column="people_identity" property="peopleIdentity"/>
+        <result column="people_beginDate" property="peopleBeginDate"/>
+        <result column="people_endDate" property="peopleEndDate"/>
+        <result column="people_status" property="peopleStatus"/>
+    </resultMap>
+    <sql id="Base_Column_List">
+        people_id,people_name,people_sex,people_cardNumber,
+        people_job,people_class,people_jobName,people_work,
+        people_phone,people_identity,people_beginDate,people_endDate,people_status
+    </sql>
+    <insert id="addPeople" keyProperty="peopleId" useGeneratedKeys="true">
+        INSERT INTO retirement_activityManagement_people
+        (people_name,people_sex,people_cardNumber,
+        people_job,people_class,people_jobName,people_work,people_phone,
+        people_identity,people_beginDate,people_endDate,people_status)
+        VALUE
+	    (#{peopleName},#{peopleSex},#{peopleCardNumber},#{peopleJob},
+	    #{peopleClass},#{peopleJobName},#{peopleWork},#{peoplePhone},
+	    #{peopleIdentity},#{peopleBeginDate},#{peopleEndDate},#{peopleStatus})
+    </insert>
+    <delete id="deleteDsIds" parameterType="String">
+        delete from retirement_activityManagement_people where people_id in
+        <foreach item="item" collection="array" open="(" separator="," close=")">
+            #{item}
+        </foreach>
+    </delete>
+    <select id="selectListByPage" parameterType="java.lang.String" resultMap="BaseResultMap">
+        select
+        <include refid="Base_Column_List"/>
+        from retirement_activityManagement_people
+    </select>
+    <select id="selectByPrimaryKey1" resultType="spring.entity.activityManagement.ActivityManagementPeople">
+        SELECT
+	    c.people_id as peopleId,c.people_name as peopleName,c.people_sex as peopleSex,
+	    c.people_cardNumber as peopleCardNumber,c.people_job as peopleJob,c.people_class as peopleClass,
+	    c.people_jobName as peopleJobName,c.people_work as peopleWork,c.people_phone as peoplePhone,
+	    c.people_identity as peopleIdentity,c.people_beginDate as peopleBeginDate,c.people_endDate as peopleEndDate,
+	    c.people_status as peopleStatus
+        FROM
+	    retirement_activityManagementAndPeople a
+	    INNER JOIN retirement_activityManagement b ON b.activity_id = a.activity_id
+	    INNER JOIN retirement_activityManagement_people c ON c.people_id = a.people_id
+	    WHERE b.activity_id=#{activityId}
+    </select>
+    <select id="count" resultType="spring.entity.activityManagement.ActivityManagementPeople">
+                SELECT
+	    count(c.people_id) as applyCount
+        FROM
+	    retirement_activityManagementAndPeople a
+	    INNER JOIN retirement_activityManagement b ON b.activity_id = a.activity_id
+	    INNER JOIN retirement_activityManagement_people c ON c.people_id = a.people_id
+	    WHERE b.activity_id=#{activityId}
+    </select>
+</mapper>

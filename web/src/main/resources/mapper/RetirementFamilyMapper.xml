@@ -1,0 +1,79 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="spring.mapper.RetirementFamilyMapper">
+    <resultMap id="BaseResultMap" type="spring.entity.RetirementFamily" >
+        <id column="family_id" property="id" />
+        <result column="family_name" property="familyName"  />
+        <result column="family_sex" property="familySex" />
+        <result column="family_card" property="familyCard" />
+        <result column="family_identity" property="familyIdentity"  />
+        <result column="family_date" property="familyDate" />
+        <result column="family_nation" property="familyNation" />
+        <result column="family_native" property="familyNative" />
+        <result column="family_politics" property="familyPolitics" />
+        <result column="family_time" property="familyTime" />
+        <result column="family_official" property="familyOfficial" />
+        <result column="family_highest" property="familyHighest" />
+        <result column="family_enter" property="familyEnter" />
+        <result column="family_fnamea" property="familyFnamea" />
+        <result column="family_relationa" property="familyRelationa" />
+        <result column="family_unita" property="familyUnita" />
+        <result column="family_phonea" property="familyPhonea" />
+        <result column="family_fnames" property="familyFnames" />
+        <result column="family_relations" property="familyRelations" />
+        <result column="family_units" property="familyUnits" />
+        <result column="family_phones" property="familyPhones" />
+        <result column="family_fnamed" property="familyFnamed" />
+        <result column="family_relationd" property="familyRelationd" />
+        <result column="family_unitd" property="familyUnitd" />
+        <result column="family_phoned" property="familyPhoned" />
+        <result column="family_fnamef" property="familyFnamef" />
+        <result column="family_relationf" property="familyRelationf" />
+        <result column="family_unitf" property="familyUnitf" />
+        <result column="family_phonef" property="familyPhonef" />
+        <result column="pamily_file" property="pamilyFile" />
+        <result column="pamily_state" property="pamilyState"/>
+    </resultMap>
+
+    <sql id="Base_Column_List" >
+        `family_id`,`family_name`,`family_sex`,`family_identity`,`family_card`,`family_date`,`family_nation`,`family_native`,`family_politics`,`family_time`,`family_official`,`family_highest`,`family_enter`,`family_fnamea`,`family_relationa`,`family_unita`,`family_phonea`,`family_fnames`,`family_relations`,`family_units`,`family_phones`,`family_fnamed`,`family_relationd`,`family_unitd`,`family_phoned`,`family_fnamef`,`family_relationf`,`family_unitf`,`family_phonef`,`pamily_file`,pamily_state
+    </sql>
+
+    <select id="selectListByPage" parameterType="java.lang.String" resultMap="BaseResultMap">
+        select
+        <include refid="Base_Column_List"/>
+        FROM retirement_family
+        <where>
+            <if test="familyName!=null and familyName!=''">
+                family_name LIKE concat( concat( '%',#{familyName} ),'%' )
+            </if>
+            <if test="familySex!=null and familySex!=''">
+               AND  family_sex  = #{familySex}
+            </if>
+            <if test="familyDate!=null">
+               AND family_date <![CDATA[ <= ]]> #{familyDate}
+            </if>
+        </where>
+        ORDER by family_id
+    </select>
+
+    <select id="selectFamily"  resultMap="BaseResultMap">
+        SELECT
+        <include refid="Base_Column_List"/>
+        FROM `retirement_family`
+        <where>
+            <if test="familyCard!=null and familyCard!=''">
+                `family_card`=#{familyCard}
+            </if>
+        </where>
+    </select>
+
+    <delete id="deleteFaIds" parameterType="String">
+        delete from retirement_family where family_id in
+        <foreach item="item" collection="array" open="(" separator="," close=")">
+            #{item}
+        </foreach>
+    </delete>
+
+
+</mapper>

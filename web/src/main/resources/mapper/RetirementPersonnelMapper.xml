@@ -1,0 +1,271 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="spring.mapper.RetirementPersonnelMapper">
+    <resultMap id="BaseResultMap" type="spring.entity.RetirementPersonnel" >
+        <id column="staff_id" property="id"  />
+        <result column="staff_name" property="staffName" jdbcType="VARCHAR" />
+        <result column="staff_sex" property="staffSex" jdbcType="VARCHAR" />
+        <result column="staff_identity" property="staffIdentity" jdbcType="VARCHAR" />
+        <result column="staff_card" property="staffCard" />
+        <result column="staff_date" property="staffDate" />
+        <result column="staff_nation" property="staffNation" />
+        <result column="staff_native" property="staffNative" />
+        <result column="staff_politics" property="staffPolitics" />
+        <result column="staff_time" property="staffTime" />
+        <result column="staff_official" property="staffOfficial" />
+        <result column="staff_highest" property="staffHighest" />
+        <result column="staff_enter" property="staffEnter" />
+        <result column="staff_become" property="staffBecome" />
+        <result column="staff_branch" property="staffBranch" />
+        <result column="staff_duty" property="staffDuty" />
+        <result column="staff_places" property="staffPlaces" />
+        <result column="staff_retire" property="staffRetire" />
+        <result column="staff_phone" property="staffPhone" />
+        <result column="staff_number" property="staffNumber" />
+        <result column="staff_ageduty" property="staffAgeduty" />
+        <result column="staff_rank" property="staffRank" />
+        <result column="staff_professional" property="staffProfessional" />
+        <result column="staff_treatment" property="staffTreatment" />
+        <result column="staff_category" property="staffCategory" />
+        <result column="staff_unit" property="staffUnit" />
+        <result column="staff_condition" property="staffCondition" />
+        <result column="staff_marriage" property="staffMarriage" />
+        <result column="staff_provide" property="staffProvide" />
+        <result column="staff_solitude" property="staffSolitude" />
+        <result column="staff_disability" property="staffDisability" />
+        <result column="staff_incapacitation" property="staffIncapacitation" />
+        <result column="staff_cadre" property="staffCadre" />
+        <result column="staff_same" property="staffSame" />
+        <result column="staff_address" property="staffAddress" />
+        <result column="staff_experience" property="staffExperience" />
+        <result column="staff_prove" property="staffProve" />
+        <result column="staff_allopatric" property="staffAllopatric" />
+        <result column="staff_photo" property="staffPhoto" />
+        <result column="family_fname" property="familyFname" />
+        <result column="family_relation" property="familyRelation" />
+        <result column="family_unit" property="familyUnit" />
+        <result column="family_phone" property="familyPhone" />
+        <result column="family_name" property="familyName" />
+        <result column="family_self" property="familySelf" />
+        <result column="family_relatio" property="familyRelatio" />
+        <result column="family_permanent" property="familyPermanent" />
+        <result column="family_address" property="familyAddress"/>
+        <result column="family_nameq" property="familyNameq" />
+        <result column="family_selfq" property="familySelfq" />
+        <result column="family_relatioq" property="familyRelatioq" />
+        <result column="family_permanentq" property="familyPermanentq" />
+        <result column="family_addressq" property="familyAddressq"/>
+        <result column="family_namew" property="familyNamew" />
+        <result column="family_selfw" property="familySelfw" />
+        <result column="family_relatiow" property="familyRelatiow" />
+        <result column="family_permanentw" property="familyPermanentw" />
+        <result column="family_addressw" property="familyAddressw"/>
+        <result column="family_namee" property="familyNamee" />
+        <result column="family_selfe" property="familySelfe" />
+        <result column="family_relatioe" property="familyRelatioe" />
+        <result column="family_permanente" property="familyPermanente" />
+        <result column="family_addresse" property="familyAddresse"/>
+        <result column="family_names" property="familyNames" />
+        <result column="family_selfs" property="familySelfs" />
+        <result column="family_relatios" property="familyRelatios" />
+        <result column="family_permanents" property="familyPermanents" />
+        <result column="family_province" property="familyProvince" />
+        <result column="family_city" property="familyCity" />
+        <result column="family_district" property="familyDistrict" />
+        <result column="staff_state" property="staffState"/>
+    </resultMap>
+    <sql id="Base_Column_List">
+        `staff_id`,`staff_name`,`staff_sex`,`staff_identity`,`staff_card`,`staff_date`,`staff_nation`,`staff_native`,`staff_politics`,`staff_time`,`staff_official`,`staff_highest`,`staff_enter`,`staff_become`,`staff_branch`,`staff_duty`,`staff_places`,`staff_retire`,`staff_phone`,`staff_number`,`staff_ageduty`,`staff_rank`,`staff_professional`,`staff_treatment`,`staff_category`,`staff_condition`,`staff_unit`,`staff_marriage`,`staff_provide`,`staff_solitude`,`staff_disability`,`staff_incapacitation`,`staff_cadre`,`staff_same`,`staff_address`,`staff_experience`,`staff_prove`,`staff_allopatric`,`staff_photo`,`family_fname`,`family_relation`,`family_unit`,`family_phone`,`family_address`,`family_name`,`family_self`,`family_relatio`,`family_permanent`,`family_province`,`family_city`,`family_district`,staff_state
+    </sql>
+
+    <select id="selectListByPage" parameterType="java.lang.String" resultMap="BaseResultMap">
+        SELECT
+        <include refid="Base_Column_List"/>
+        FROM retirement_personnel
+        <where>
+            <if test="staffDate!=null">
+                staff_date <![CDATA[ >= ]]> #{staffDate}
+            </if>
+            <if test="staffSex!=null and staffSex!=''">
+                AND staff_sex = #{staffSex}
+            </if>
+            <if test="staffName!=null and staffName!=''">
+                AND staff_name LIKE concat( concat ('%',#{staffName},'%') )
+            </if>
+            <if test="staffCard!=null and staffCard!=''">
+                AND staff_card LIKE concat( concat ('%',#{staffCard},'%') )
+            </if>
+            <if test="staffState!=null and staffState!=''">
+                AND staff_state = #{staffState}
+            </if>
+        </where>
+        ORDER by staff_id
+    </select>
+
+    <insert id="added" parameterType="RetirementPersonnel" useGeneratedKeys="true" keyProperty="id">
+        insert into retirement_personnel
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+            <if test="staffName != null">staff_name,</if>
+            <if test="staffSex != null">staff_sex,</if>
+            <if test="staffIdentity != null">staff_identity,</if>
+            <if test="staffCard != null">staff_card,</if>
+            <if test="staffDate != null">staff_date,</if>
+            <if test="staffNation != null">staff_nation,</if>
+            <if test="staffNative != null">staff_native,</if>
+            <if test="staffPolitics != null">staff_politics,</if>
+            <if test="staffTime != null">staff_time,</if>
+            <if test="staffOfficial != null">staff_official,</if>
+            <if test="staffHighest != null">staff_highest,</if>
+            <if test="staffEnter != null">staff_enter,</if>
+            <if test="staffBecome != null">staff_become,</if>
+            <if test="staffBranch != null">staff_branch,</if>
+            <if test="staffDuty != null">staff_duty,</if>
+            <if test="staffPlaces != null">staff_places,</if>
+            <if test="staffRetire != null">staff_retire,</if>
+            <if test="staffPhone != null">staff_phone,</if>
+            <if test="staffNumber != null">staff_number,</if>
+            <if test="staffAgeduty != null">staff_ageduty,</if>
+            <if test="staffRank != null">staff_rank,</if>
+            <if test="staffProfessional != null">staff_professional,</if>
+            <if test="staffTreatment != null">staff_treatment,</if>
+            <if test="staffCategory != null">staff_category,</if>
+            <if test="staffUnit != null">staff_unit,</if>
+            <if test="staffCondition != null">staff_condition,</if>
+            <if test="staffMarriage != null">staff_marriage,</if>
+            <if test="staffProvide != null">staff_provide,</if>
+            <if test="staffSolitude != null">staff_solitude,</if>
+            <if test="staffDisability != null">staff_disability,</if>
+            <if test="staffIncapacitation != null">staff_incapacitation,</if>
+            <if test="staffCadre != null">staff_cadre,</if>
+            <if test="staffSame != null">staff_same,</if>
+            <if test="staffAddress != null">staff_address,</if>
+            <if test="staffExperience != null">staff_experience,</if>
+            <if test="staffProve != null">staff_prove,</if>
+            <if test="staffAllopatric != null">staff_allopatric,</if>
+            <if test="staffPhoto != null">staff_photo,</if>
+            <if test="familyFname != null">family_fname,</if>
+            <if test="familyRelation != null">family_relation,</if>
+            <if test="familyUnit != null">family_unit,</if>
+            <if test="familyPhone != null">family_phone,</if>
+            <if test="familyAddress != null">family_address,</if>
+            <if test="familyName != null">family_name,</if>
+            <if test="familySelf != null">family_self,</if>
+            <if test="familyRelatio != null">family_relatio,</if>
+            <if test="familyPermanent != null">family_permanent,</if>
+            <if test="familyProvince != null">family_province,</if>
+            <if test="familyCity != null">family_city,</if>
+            <if test="familyDistrict != null">family_district,</if>
+            <if test="familyNames != null">family_names,</if>
+            <if test="familySelfs != null">family_selfs,</if>
+            <if test="familyRelatios != null">family_relatios,</if>
+            <if test="familyPermanents != null">family_permanents,</if>
+            <if test="familyFnameq != null">family_fnameq,</if>
+            <if test="familyRelationq != null">family_relationq,</if>
+            <if test="familyUnitq != null">family_unitq,</if>
+            <if test="familyPhoneq != null">family_phoneq,</if>
+            <if test="familyAddressq != null">family_addressq,</if>
+            <if test="familyFnamew != null">family_fnamew,</if>
+            <if test="familyRelationw != null">family_relationw,</if>
+            <if test="familyUnitw != null">family_unitw,</if>
+            <if test="familyPhonew != null">family_phonew,</if>
+            <if test="familyAddressw != null">family_addressw,</if>
+            <if test="familyFnamee != null">family_fnamee,</if>
+            <if test="familyRelatione != null">family_relatione,</if>
+            <if test="familyUnite != null">family_unite,</if>
+            <if test="familyPhonee != null">family_phonee,</if>
+            <if test="familyAddresse != null">family_addresse,</if>
+            <if test="staffState != null">staff_state,</if>
+        </trim>
+        <trim prefix="values (" suffix=")" suffixOverrides=",">
+            <if test="staffName != null">#{staffName},</if>
+            <if test="staffSex != null">#{staffSex},</if>
+            <if test="staffIdentity != null">#{staffIdentity},</if>
+            <if test="staffCard != null">#{staffCard},</if>
+            <if test="staffDate != null">#{staffDate},</if>
+            <if test="staffNation != null">#{staffNation},</if>
+            <if test="staffNative != null">#{staffNative},</if>
+            <if test="staffPolitics != null">#{staffPolitics},</if>
+            <if test="staffTime != null">#{staffTime},</if>
+            <if test="staffOfficial != null">#{staffOfficial},</if>
+            <if test="staffHighest != null">#{staffHighest},</if>
+            <if test="staffEnter != null">#{staffEnter},</if>
+            <if test="staffBecome != null">#{staffBecome},</if>
+            <if test="staffBranch != null">#{staffBranch},</if>
+            <if test="staffDuty != null">#{staffDuty},</if>
+            <if test="staffPlaces != null">#{staffPlaces},</if>
+            <if test="staffRetire != null">#{staffRetire},</if>
+            <if test="staffPhone != null">#{staffPhone},</if>
+            <if test="staffNumber != null">#{staffNumber},</if>
+            <if test="staffAgeduty != null">#{staffAgeduty},</if>
+            <if test="staffRank != null">#{staffRank},</if>
+            <if test="staffProfessional != null">#{staffProfessional},</if>
+            <if test="staffTreatment != null">#{staffTreatment},</if>
+            <if test="staffCategory != null">#{staffCategory},</if>
+            <if test="staffUnit != null">#{staffUnit},</if>
+            <if test="staffCondition != null">#{staffCondition},</if>
+            <if test="staffMarriage != null">#{staffMarriage},</if>
+            <if test="staffProvide != null">#{staffProvide},</if>
+            <if test="staffSolitude != null">#{staffSolitude},</if>
+            <if test="staffDisability != null">#{staffDisability},</if>
+            <if test="staffIncapacitation != null">#{staffIncapacitation},</if>
+            <if test="staffCadre != null">#{staffCadre},</if>
+            <if test="staffSame != null">#{staffSame},</if>
+            <if test="staffAddress != null">#{staffAddress},</if>
+            <if test="staffExperience != null">#{staffExperience},</if>
+            <if test="staffProve != null">#{staffProve},</if>
+            <if test="staffAllopatric != null">#{staffAllopatric},</if>
+            <if test="staffPhoto != null">#{staffPhoto},</if>
+            <if test="familyFname != null">#{familyFname},</if>
+            <if test="familyRelation != null">#{familyRelation},</if>
+            <if test="familyUnit != null">#{familyUnit},</if>
+            <if test="familyPhone != null">#{familyPhone},</if>
+            <if test="familyAddress != null">#{familyAddress},</if>
+            <if test="familyName != null">#{familyName},</if>
+            <if test="familySelf != null">#{familySelf},</if>
+            <if test="familyRelatio != null">#{familyRelatio},</if>
+            <if test="familyPermanent != null">#{familyPermanent},</if>
+            <if test="familyProvince != null">#{familyProvince},</if>
+            <if test="familyCity != null">#{familyCity},</if>
+            <if test="familyDistrict != null">#{familyDistrict},</if>
+            <if test="familyNames != null">#{familyNames},</if>
+            <if test="familySelfs != null">#{familySelfs},</if>
+            <if test="familyRelatios != null">#{familyRelatios},</if>
+            <if test="familyPermanents != null">#{familyPermanents},</if>
+            <if test="familyFnameq != null">#{familyFnameq},</if>
+            <if test="familyRelationq != null">#{familyRelationq},</if>
+            <if test="familyUnitq != null">#{familyUnitq},</if>
+            <if test="familyPhoneq != null">#{familyPhoneq},</if>
+            <if test="familyAddressq != null">#{familyAddressq},</if>
+            <if test="familyFnamew != null">#{familyFnamew},</if>
+            <if test="familyRelationw != null">#{familyRelationw},</if>
+            <if test="familyUnitw != null">#{familyUnitw},</if>
+            <if test="familyPhonew != null">#{familyPhonew},</if>
+            <if test="familyAddressw != null">#{familyAddressw},</if>
+            <if test="familyFnamee != null">#{familyFnamee},</if>
+            <if test="familyRelatione != null">#{familyRelatione},</if>
+            <if test="familyUnite != null">#{familyUnite},</if>
+            <if test="familyPhonee != null">#{familyPhonee},</if>
+            <if test="familyAddresse != null">#{familyAddresse},</if>
+            <if test="staffState != null">#{staffState}</if>
+        </trim>
+    </insert>
+
+    <select id="selectCaid" resultMap="BaseResultMap">
+        SELECT
+        <include refid="Base_Column_List"/>
+        FROM retirement_personnel
+        <where>
+            <if test="staffCard!=null and staffCard!=''">
+                staff_card = #{staffCard}
+            </if>
+        </where>
+    </select>
+
+    <delete id="deleteByIdss" parameterType="String">
+        delete from retirement_personnel where staff_id in
+        <foreach item="item" collection="array" open="(" separator="," close=")">
+            #{item}
+        </foreach>
+    </delete>
+
+</mapper>

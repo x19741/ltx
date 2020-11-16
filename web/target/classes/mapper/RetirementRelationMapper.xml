@@ -1,0 +1,54 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="spring.mapper.RetirementRelationMapper">
+    <resultMap id="BaseResultMap" type="spring.entity.RetirementRelation">
+        <id column="relation_id" property="id"/>
+        <result column="relation_name" property="relationName"/>
+        <result column="relation_mode" property="relationMode"/>
+        <result column="relation_num" property="relationNum"/>
+        <result column="relation_intrinsic" property="relationIntrinsic"/>
+        <result column="relation_intrinsica" property="relationIntrinsica"/>
+        <result column="relation_intrinsicb" property="relationIntrinsicb"/>
+        <result column="relation_intrinsicc" property="relationIntrinsicc"/>
+        <result column="relation_present" property="relationPresent"/>
+        <result column="relation_presenta" property="relationPresenta"/>
+        <result column="relation_presentb" property="relationPresentb"/>
+        <result column="relation_presentc" property="relationPresentc"/>
+        <result column="relation_data" property="relationData"/>
+        <result column="relation_datb" property="relationDatb"/>
+        <result column="relation_datc" property="relationDatc"/>
+        <result column="relation_date" property="relationDate"/>
+        <result column="relation_details" property="relationDetails"/>
+        <result column="relation_detaila" property="relationDetaila"/>
+        <result column="relation_detailb" property="relationDetailb"/>
+        <result column="relation_detailc" property="relationDetailc"/>
+    </resultMap>
+    <sql id="Base_Column_List">
+        `relation_id`,`relation_name`,`relation_mode`,`relation_num`,`relation_intrinsic`,`relation_intrinsica`,`relation_intrinsicb`,`relation_intrinsicc`,`relation_present`,`relation_presenta`,`relation_presentb`,`relation_presentc`,`relation_date`,`relation_data`,`relation_datb`,`relation_details`,`relation_datc`,`relation_detaila`,`relation_detailb`,`relation_detailc`
+    </sql>
+    <select id="selectListByPage" parameterType="java.lang.String" resultMap="BaseResultMap">
+        SELECT
+        <include refid="Base_Column_List"/>
+        FROM retirement_relation
+        <where>
+            <if test="relationName!=null and relationName!=''">
+                relation_name LIKE CONCAT( concat('%',#{relationName},'%' ) )
+            </if>
+            <if test="relationIntrinsic!=null and relationIntrinsic!=''">
+                relation_intrinsic #{relationIntrinsic}
+            </if>
+            <if test="relationPresent!=null and relationPresent!=''">
+                relation_present #{relationPresent}
+            </if>
+        </where>
+        ORDER by relation_id
+    </select>
+
+    <delete id="deleteRela" parameterType="String">
+        DELETE FROM `retirement_relation` WHERE `relation_id` IN
+        <foreach collection="array" item="item" open="(" separator="," close= ")">
+            #{item}
+        </foreach>
+
+    </delete>
+</mapper>

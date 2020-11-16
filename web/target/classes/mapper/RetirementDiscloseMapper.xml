@@ -1,0 +1,64 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="spring.mapper.RetirementDiscloseMapper">
+    <resultMap id="BaseResultMap" type="spring.entity.RetirementDisclose" >
+        <id column="disclose_id" property="id" />
+        <result column="disclose_name" property="discloseName" jdbcType="VARCHAR" />
+        <result column="disclose_sex" property="discloseSex" jdbcType="INTEGER" />
+        <result column="disclose_card" property="discloseCard" jdbcType="VARCHAR" />
+        <result column="disclose_state" property="discloseState" jdbcType="VARCHAR" />
+        <result column="disclose_date" property="discloseDate" />
+        <result column="disclose_nation" property="discloseNation" />
+        <result column="disclose_politics" property="disclosePolitics" />
+        <result column="disclose_enter" property="discloseEnter" />
+        <result column="disclose_education" property="discloseEducation" />
+        <result column="disclose_degree" property="discloseDegree" />
+        <result column="disclose_admitted" property="discloseAdmitted" />
+        <result column="disclose_picture" property="disclosePicture" />
+        <result column="disclose_address" property="discloseAddress" />
+        <result column="disclose_addressa" property="discloseAddressa" />
+        <result column="disclose_addressb" property="discloseAddressb" />
+        <result column="disclose_addressc" property="discloseAddressc" />
+        <result column="disclose_identity" property="discloseIdentity"/>
+        <result column="disclose_default" property="discloseDefault"/>
+    </resultMap>
+
+    <sql id="Base_Column_List" >
+        `disclose_id`,`disclose_name`,`disclose_sex`,`disclose_card`,`disclose_state`,`disclose_date`,`disclose_nation`,`disclose_politics`,`disclose_enter`,`disclose_education`,`disclose_degree`,`disclose_admitted`,`disclose_picture`,`disclose_address`,`disclose_addressa`,`disclose_addressb`,`disclose_addressc`,disclose_identity,disclose_default
+    </sql>
+
+    <select id="selectListByPage" parameterType="java.lang.String" resultMap="BaseResultMap">
+        select
+        <include refid="Base_Column_List"/>
+        FROM retirement_disclose
+        <where>
+            <if test="discloseAddress!=null and discloseAddress!=''">
+                disclose_address LIKE concat( concat( '%',#{discloseAddress} ),'%' )
+            </if>
+            <if test="discloseName!=null and discloseName!=''">
+                disclose_name LIKE concat( concat( '%',#{discloseName} ),'%' )
+            </if>
+        </where>
+        ORDER by disclose_id
+    </select>
+
+    <select id="selectName"  resultMap="BaseResultMap">
+        SELECT
+        <include refid="Base_Column_List"/>
+        FROM `retirement_disclose`
+        <where>
+            <if test="discloseCard!=null and discloseCard!=''">
+                `disclose_card`=#{discloseCard}
+            </if>
+        </where>
+    </select>
+
+    <delete id="deleteDsIds" parameterType="String">
+        delete from retirement_disclose where disclose_id in
+        <foreach item="item" collection="array" open="(" separator="," close=")">
+            #{item}
+        </foreach>
+    </delete>
+
+
+</mapper>

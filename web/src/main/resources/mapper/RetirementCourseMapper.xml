@@ -1,0 +1,51 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="spring.mapper.oldOrganizationMapper.RetirementCourseMapper">
+    <resultMap id="BaseResultMap" type="spring.entity.oldOrganization.RetirementCourse">
+        <id column="course_id" property="courseId"/>
+        <result column="course_name" property="courseName"/>
+        <result column="course_number" property="courseNumber"/>
+        <result column="course_maxnumber" property="courseMaxNumber"/>
+        <result column="course_partyMember" property="coursePartyMember"/>
+        <result column="course_teacher" property="courseTeacher"/>
+        <result column="course_address" property="courseAddress"/>
+        <result column="course_beginDate" property="courseBeginDate"/>
+        <result column="course_endDate" property="courseEndDate"/>
+        <result column="course_content" property="courseContent"/>
+        <result column="course_synopsis" property="courseSynopsis"/>
+        <result column="course_schoolYear" property="courseSchoolYear"/>
+        <result column="course_semester" property="courseSemester"/>
+        <result column="course_status" property="courseStatus"/>
+    </resultMap>
+    <sql id="Base_Column_List">
+        course_id,course_name,course_number,course_maxnumber,course_partyMember,
+        course_teacher,course_address,course_beginDate,course_endDate,course_content,
+        course_synopsis,course_schoolYear,course_semester,course_status
+    </sql>
+    <select id="selectListByPage" parameterType="spring.entity.oldOrganization.RetirementCourse" resultMap="BaseResultMap">
+        select
+        <include refid="Base_Column_List"/>
+        from retirement_course
+        <where>
+            <if test="courseName!=null and courseName!=''">
+              course_name LIKE concat( concat( '%',#{courseName} ),'%' )
+            </if>
+            <if test="courseTeacher!=null and courseTeacher!=''">
+                AND  course_teacher LIKE concat( concat( '%',#{courseTeacher} ),'%' )
+            </if>
+            <if test="courseBeginDate!=null">
+                and course_beginDate >= #{courseBeginDate}
+            </if>
+            <if test="courseEndDate!=null">
+                and course_endDate &lt;= #{courseEndDate}
+            </if>
+        </where>
+        ORDER by course_id
+    </select>
+    <delete id="deleteDsIds" parameterType="String">
+        delete from retirement_course where course_id in
+        <foreach item="item" collection="array" open="(" separator="," close=")">
+            #{item}
+        </foreach>
+    </delete>
+</mapper>

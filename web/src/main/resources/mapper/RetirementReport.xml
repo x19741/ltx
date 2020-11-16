@@ -1,0 +1,55 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="spring.mapper.RetirementReportMapper">
+    <resultMap id="BaseResultMap" type="spring.entity.RetirementReport" >
+        <id column="report_id" property="id"  />
+        <result column="report_name" property="reportName" />
+        <result column="report_card" property="reportCard" />
+        <result column="report_sex" property="reportSex" />
+        <result column="report_age" property="reportAge" />
+        <result column="report_date" property="reportDate" />
+        <result column="report_relation" property="reportRelation" />
+    </resultMap>
+
+    <sql id="Base_Column_List">
+        `report_id`,`report_name`,`report_card`,`report_sex`,`report_age`,`report_date`,`report_relation`
+    </sql>
+
+    <select id="selectListByPage" parameterType="java.lang.String" resultMap="BaseResultMap">
+        SELECT
+        <include refid="Base_Column_List"/>
+        FROM retirement_report
+        <where>
+            <if  test="reportCard!=null and reportCard!=''">
+                 report_card = #{reportCard}
+            </if>
+            <if test="reportName!=null and reportName!=''">
+               and report_name LIKE concat( concat ('%',#{reportName},'%'))
+            </if>
+            <if test="reportDate!=null">
+               and report_date <![CDATA[ >= ]]> #{reportDate}
+            </if>
+        </where>
+        ORDER BY report_id
+    </select>
+
+    <select id="selectPacket" resultMap="BaseResultMap">
+        SELECT
+        <include refid="Base_Column_List"/>
+        FROM retirement_report
+        <where>
+            <if test="reportCard!=null and reportCard!=''">
+                report_card = #{reportCard}
+            </if>
+        </where>
+    </select>
+
+    <delete id="deleteReIdss" parameterType="String">
+        delete from retirement_report where report_id in
+        <foreach item="item" collection="array" open="(" separator="," close=")">
+            #{item}
+        </foreach>
+    </delete>
+
+
+</mapper>

@@ -1,0 +1,55 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="spring.mapper.RetirementHappyMapper">
+    <resultMap id="BaseResultMap" type="spring.entity.RetirementHappy">
+        <id column="happy_id" property="id"/>
+        <result column="happy_name" property="happyName"/>
+        <result column="happy_sex" property="happySex"/>
+        <result column="happy_card" property="happyCard"/>
+        <result column="happy_relation" property="happyRelation"/>
+        <result column="happy_date" property="happyDatea"/>
+        <result column="happy_date" property="happyDateb"/>
+        <result column="happy_age" property="happyAgea"/>
+        <result column="happy_age" property="happyAgeb"/>
+    </resultMap>
+
+    <sql id="Base_Column_List">
+        `happy_id`,`happy_name`,`happy_sex`,`happy_card`,`happy_relation`,`happy_date`,happy_age
+    </sql>
+
+    <select id="selectListByPage" parameterType="java.lang.String" resultMap="BaseResultMap">
+        SELECT
+        <include refid="Base_Column_List"/>
+        FROM `retirement_happy`
+        <where>
+            <if test="happySex!=null and happySex!=''">
+                happy_sex= #{happySex}
+            </if>
+            <if test="happyDate!=null">
+                AND happy_date BETWEEN #{happyDatea} AND #{happyDateb}
+            </if>
+            <if test="happyAge!=null">
+                AND happy_age BETWEEN #{happyAgea} AND #{happyAgeb}
+            </if>
+        </where>
+        ORDER by happy_id
+    </select>
+
+    <select id="selectFete" resultMap="BaseResultMap">
+        SELECT
+        <include refid="Base_Column_List"/>
+        FROM retirement_happy
+        <where>
+            <if test="happyCard!=null and happyCard!=''">
+                happy_card = #{happyCard}
+            </if>
+        </where>
+    </select>
+
+    <delete id="deleteHaIds" parameterType="String">
+        delete from retirement_happy where happy_id in
+        <foreach item="item" collection="array" open="(" separator="," close=")">
+            #{item}
+        </foreach>
+    </delete>
+</mapper>

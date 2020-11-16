@@ -1,0 +1,56 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="spring.mapper.SysMenuMapper" >
+  <resultMap id="BaseResultMap" type="spring.entity.SysMenu" >
+    <id column="ID" property="id" jdbcType="VARCHAR" />
+    <result column="CREATE_BY" property="createBy" jdbcType="VARCHAR" />
+    <result column="CREATE_DATE" property="createDate" jdbcType="TIMESTAMP" />
+    <result column="UPDATE_BY" property="updateBy" jdbcType="VARCHAR" />
+    <result column="UPDATE_DATE" property="updateDate" jdbcType="TIMESTAMP" />
+    <result column="MENU_NAME" property="menuName" jdbcType="VARCHAR" />
+    <result column="MENU_URL" property="menuUrl" jdbcType="VARCHAR" />
+    <result column="ORDER_NUM" property="orderNum" jdbcType="VARCHAR" />
+    <result column="PARENT_ID" property="parentId" jdbcType="VARCHAR" />
+    <result column="MENU_ICON" property="menuIcon" jdbcType="VARCHAR" />
+    <result column="IS_END_LEVEL" property="isEndLevel" jdbcType="VARCHAR" />
+
+
+
+  </resultMap>
+  <sql id="Base_Column_List" >
+    ID, CREATE_BY, CREATE_DATE, UPDATE_BY, UPDATE_DATE, MENU_NAME, MENU_URL, ORDER_NUM,
+    PARENT_ID, MENU_ICON,IS_END_LEVEL
+  </sql>
+
+  <!--用户查询-->
+  <select id="selectListByPage" resultMap="BaseResultMap" parameterType="java.lang.String">
+    select a1.*
+    from sys_menu  a1
+    join sys_menu_role  a3 on a3.menu_id=a1.id
+    join sys_role  a2  on  a3.role_id=a2.id
+    join sys_role_user  a4  on a4.role_id=a2.id
+    join sys_user a5 on a4.user_id=a5.id
+    <where>
+      <if test="createBy!=null and createBy!=''">
+        and a5.ID=#{createBy}
+      </if>
+      <if test="parentId!=null and parentId!=''">
+        and parent_id=#{parentId}
+      </if>
+    </where>
+    ORDER BY order_num
+  </select>
+
+<!--管理员查询-->
+  <select id="selectListByPage2" resultMap="BaseResultMap" parameterType="java.lang.String">
+    select
+    <include refid="Base_Column_List"/>
+    from sys_menu
+    <where>
+      <if test="parentId!=null and parentId!=''">
+        and PARENT_ID=#{parentId}
+      </if>
+    </where>
+    ORDER BY ORDER_NUM
+  </select>
+</mapper>

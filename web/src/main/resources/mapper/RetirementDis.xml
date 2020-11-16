@@ -1,0 +1,100 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="spring.mapper.RetirementDisMapper">
+    <resultMap id="BaseResultMap" type="spring.entity.RetirementDis">
+        <id column="die_id" property="id"/>
+        <result column="die_name" property="dieName"/>
+        <result column="die_sex" property="dieSex"/>
+        <result column="die_age" property="dieAge"/>
+        <result column="die_card" property="dieCard"/>
+        <result column="die_leave" property="dieLeave"/>
+        <result column="die_farewell" property="dieFarewell"/>
+        <result column="die_address" property="dieAddress"/>
+        <result column="die_away" property="dieAway"/>
+    </resultMap>
+
+    <sql id="Base_Column_List">
+        `die_id`,`die_name`,`die_sex`,`die_age`,`die_card`,`die_leave`,`die_farewell`,`die_address`,`die_away`
+    </sql>
+
+    <select id="selectListByPage" parameterType="java.lang.String" resultMap="BaseResultMap">
+        SELECT die_id,die_age,die_leave,die_farewell,die_address,die_away,b.staff_name
+        as staffName,b.staff_sex as staffSex,b.staff_card as staffCard
+        FROM `retirement_die` JOIN `retirement_personnel` b
+        <where>
+            die_id=b.staff_id
+            AND b.staff_state=2
+            <if test="staffName!=null and staffName!=''">
+                and b.staff_name LIKE concat(concat ('%',#{staffName},'%'))
+            </if>
+            <if test="staffCard!=null and staffCard!=''">
+                and b.staff_card LIKE concat(concat ('%',#{staffCard},'%'))
+            </if>
+            <if test="dieLeave!=null">
+                and die_leave <![CDATA[ <= ]]> #{dieLeave}
+            </if>
+        </where>
+        ORDER BY die_id
+    </select>
+
+    <select id="selectOnes" parameterType="Long" resultMap="BaseResultMap">
+        SELECT die_id,die_age,die_leave,die_farewell,die_address,die_away,b.staff_name
+        AS staffName,b.staff_sex AS staffSex,b.staff_card AS staffCard
+        FROM `retirement_die` JOIN `retirement_personnel` b
+        <where>
+            die_id=b.staff_id
+            <if test="id!=null">
+                AND die_id = #{id}
+            </if>
+        </where>
+        ORDER BY die_id
+    </select>
+
+    <select id="selectWithout" resultMap="BaseResultMap">
+        SELECT
+        <include refid="Base_Column_List"/>
+        FROM retirement_die
+        <where>
+            <if test="dieCard!=null and dieCard!=''">
+                die_card = #{dieCard}
+            </if>
+        </where>
+    </select>
+
+    <insert id="addw" parameterType="Long">
+        insert into retirement_die
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+            <if test="id != null">die_id,</if>
+        </trim>
+        <trim prefix="values (" suffix=")" suffixOverrides=",">
+            <if test="id != null">#{id},</if>
+        </trim>
+    </insert>
+
+    <update id="alter" parameterType="RetirementDis">
+        update retirement_die
+        <trim prefix="SET" suffixOverrides=",">
+            <if test="dieName != null">die_name = #{dieName},</if>
+            <if test="dieSex != null">die_sex = #{dieSex},</if>
+            <if test="dieCard != null">die_card = #{dieCard},</if>
+            <if test="dieAge != null">die_age = #{dieAge},</if>
+            <if test="dieLeave != null">die_leave = #{dieLeave},</if>
+            <if test="dieFarewell != null">die_farewell = #{dieFarewell},</if>
+            <if test="dieAway != null">die_away = #{dieAway},</if>
+            <if test="dieAddress != null">die_address = #{dieAddress},</if>
+<!--            <if test="staffName != null">staff_name = #{staffName},</if>
+            <if test="staffSex != null">staff_sex = #{staffSex},</if>
+            <if test="staffCard != null">staff_card = #{staffCard},</if>-->
+        </trim>
+        where die_id = #{id}
+    </update>
+
+    <delete id="deleteDiIdss" parameterType="String">
+        delete from retirement_die where die_id in
+        <foreach item="item" collection="array" open="(" separator="," close=")">
+            #{item}
+        </foreach>
+    </delete>
+
+
+</mapper>

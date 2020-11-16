@@ -1,0 +1,99 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="spring.mapper.oldOrganizationMapper.RetirementArchivesMapper">
+
+    <resultMap id="BaseResultMap" type="spring.entity.oldOrganization.RetirementArchivesPeople">
+        <id column="people_id" property="peopleId"/>
+        <result column="people_name" property="peopleName"/>
+        <result column="people_sex" property="peopleSex"/>
+        <result column="people_cardNumber" property="peopleCardNumber"/>
+        <result column="people_job" property="peopleJob"/>
+        <result column="people_class" property="peopleClass"/>
+        <result column="people_jobName" property="peopleJobName"/>
+        <result column="people_work" property="peopleWork"/>
+        <result column="people_phone" property="peoplePhone"/>
+        <result column="people_identity" property="peopleIdentity"/>
+    </resultMap>
+
+    <sql id="Base_Column_List">
+        people_id,people_name,people_sex,people_cardNumber,
+        people_job,people_class,people_jobName,people_work,people_phone,people_identity
+    </sql>
+
+    <insert id="addPeople" keyProperty="peopleId" useGeneratedKeys="true">
+        INSERT INTO retirement_archives_people
+        (people_name,people_sex,people_cardNumber,
+        people_job,people_class,people_jobName,people_work,people_phone,people_identity)
+        VALUE
+	    (#{peopleName},#{peopleSex},#{peopleCardNumber},#{peopleJob},
+	    #{peopleClass},#{peopleJobName},#{peopleWork},#{peoplePhone},#{peopleIdentity})
+    </insert>
+
+    <update id="updatePeople">
+        UPDATE retirement_archives_people
+        SET people_name = #{peopleName},
+        people_sex = #{peopleSex},
+        people_cardNumber = #{peopleCardNumber},
+        people_job = #{peopleJob},
+        people_class = #{peopleClass},
+        people_jobName = #{peopleJobName},
+        people_work = #{peopleWork},
+        people_phone = #{peoplePhone},
+        people_identity = #{peopleIdentity}
+        WHERE
+	    people_id = #{peopleId}
+    </update>
+
+    <delete id="deleteDsIds" parameterType="String">
+        delete from retirement_archives_people where people_id in
+        <foreach item="item" collection="array" open="(" separator="," close=")">
+            #{item}
+        </foreach>
+    </delete>
+
+    <select id="selectByPrimaryKey1" resultType="spring.entity.oldOrganization.RetirementArchivesPeople">
+        SELECT
+	    c.people_id as peopleId,c.people_name as peopleName,c.people_sex as peopleSex,c.people_cardNumber as peopleCardNumber,
+        c.people_job as peopleJob,c.people_class as peopleClass,c.people_jobName as peopleJobName,c.people_work as peopleWork,
+        c.people_phone as peoplePhone,c.people_identity as peopleIdentity
+        FROM
+	    retirement_archivesAndPeople a
+	    INNER JOIN retirement_course b ON b.course_id = a.course_id
+	    INNER JOIN retirement_archives_people c ON c.people_id = a.people_id
+	    WHERE b.course_id=#{courseId}
+    </select>
+
+    <select id="selectByPrimaryKey" resultType="spring.entity.oldOrganization.RetirementArchivesPeople" resultMap="BaseResultMap">
+        select
+        <include refid="Base_Column_List"/>
+        from retirement_archives_people
+        where people_id=#{peopleId}
+    </select>
+
+    <!--    <resultMap id="BaseResultMap" type="spring.entity.RetirementArchives">-->
+<!--        <id column="archives_id" property="id"/>-->
+<!--        <result column="archives_courseName" property="archivesCourseName"/>-->
+<!--        <result column="archives_beginDate" property="archivesBeginDate"/>-->
+<!--        <result column="archives_endDate" property="archivesEndDate"/>-->
+<!--        <result column="archives_semester" property="archivesSemester"/>-->
+<!--        <result column="work_id" property="workId"/>-->
+<!--    </resultMap>-->
+<!--    <sql id="Base_Column_List">-->
+<!--        archives_id,archives_courseName,archives_beginDate,archives_endDate,archives_semester,work_id-->
+<!--    </sql>-->
+<!--    <select id="selectListByPage" parameterType="java.lang.String" resultMap="BaseResultMap">-->
+<!--        select-->
+<!--        <include refid="Base_Column_List"/>-->
+<!--        from retirement_archives-->
+<!--    </select>-->
+<!--    <select id="archivesInfo" resultType="spring.entity.RetirementArchives">-->
+<!--        select-->
+<!--        <include refid="Base_Column_List"/>-->
+<!--        from retirement_archives-->
+<!--    </select>-->
+<!--    <select id="selectByExample1" resultType="spring.entity.RetirementArchives">-->
+<!--        select-->
+<!--        <include refid="Base_Column_List"/>-->
+<!--        from retirement_archives-->
+<!--    </select>-->
+</mapper>
